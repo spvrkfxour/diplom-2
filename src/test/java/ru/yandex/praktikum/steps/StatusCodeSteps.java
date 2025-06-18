@@ -12,4 +12,10 @@ public class StatusCodeSteps {
         response.then().statusCode(200);
         Allure.step("Response Status Code: " + response.getStatusCode());
     }
+
+    @Step("Return body correct status code - 403")
+    public void return403Test(Response response) {
+        response.then().statusCode(403);
+        Allure.step("Response Status Code: " + response.getStatusCode());
+    }
 }

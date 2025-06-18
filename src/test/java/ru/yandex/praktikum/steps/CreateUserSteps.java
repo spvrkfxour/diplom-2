@@ -5,8 +5,10 @@ import io.qameta.allure.Step;
 import io.restassured.response.Response;
 import ru.yandex.praktikum.dto.CreateUserRequest;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.emptyString;
+import static ru.yandex.praktikum.env.EnvConst.*;
 
 
 public class CreateUserSteps {
@@ -19,12 +21,30 @@ public class CreateUserSteps {
     }
 
     @Step("Return correct body")
-    public void createUserReturnCorrectBodyTest(Response response) {
+    public String createUserReturnCorrectBody(Response response) {
         response.then()
                 .body("success", equalTo(true))
                 .body("user", notNullValue())
-                .body("accessToken", notNullValue())
                 .body("refreshToken", notNullValue());
+        String accessToken = response.path("accessToken");
+        assertThat(accessToken, not(emptyString()));
+        Allure.step("Response Body: " + response.getBody().asString());
+        return accessToken;
+    }
+
+    @Step("Return correct body already exists")
+    public void createUserThatAlreadyBeenCreatedReturnCorrectBody(Response response) {
+        response.then()
+                .body("success", equalTo(false))
+                .body("message", equalTo(CREATE_USER_ALREADY_EXISTS_MSG_ERROR));
+        Allure.step("Response Body: " + response.getBody().asString());
+    }
+
+    @Step("Return correct body without parameter")
+    public void createUserWithoutParamReturnCorrectBody(Response response) {
+        response.then()
+                .body("success", equalTo(false))
+                .body("message", equalTo(CREATE_USER_WITHOUT_PARAM_MSG_ERROR));
         Allure.step("Response Body: " + response.getBody().asString());
     }
 }
