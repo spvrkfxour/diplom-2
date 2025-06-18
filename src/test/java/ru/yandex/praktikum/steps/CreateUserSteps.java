@@ -16,8 +16,7 @@ public class CreateUserSteps {
 
     @Step("Create user")
     public Response createUserStepTest(CreateUserRequest request) {
-        Response response = userSteps.createUser(request);
-        return response;
+        return userSteps.createUser(request);
     }
 
     @Step("Return correct body")
