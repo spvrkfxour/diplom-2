@@ -21,6 +21,10 @@ public class UserSteps {
                 .post(CREATE_USER_ENDPOINT);
     }
 
+    public String getAccessToken(Response response) {
+        return response.path("accessToken");
+    }
+
     public Response loginUser(LoginUserRequest request) {
 
         return given()

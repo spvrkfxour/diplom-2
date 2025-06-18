@@ -10,7 +10,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import ru.yandex.praktikum.dto.CreateUserRequest;
-import ru.yandex.praktikum.dto.LoginUserRequest;
 import ru.yandex.praktikum.steps.CreateUserSteps;
 import ru.yandex.praktikum.steps.StatusCodeSteps;
 import ru.yandex.praktikum.steps.UserSteps;
@@ -25,7 +24,6 @@ public class CreateUserTest {
     private final CreateUserSteps createUser = new CreateUserSteps();
     private final StatusCodeSteps statusCode = new StatusCodeSteps();
     private CreateUserRequest createRequest;
-    private LoginUserRequest loginRequest;
     private String accessToken;
     private String email;
     private String password;
@@ -48,9 +46,11 @@ public class CreateUserTest {
             "POST https://stellarburgers.nomoreparties.site/api/auth/register")
     public void createValidUserTest() {
         createRequest = new CreateUserRequest(email, password, name);
-        Response response = createUser.createUserStepTest(createRequest);
-        statusCode.return200Test(response);
-        accessToken = createUser.createUserReturnCorrectBody(response);
+        Response response = createUser.createUser(createRequest);
+        statusCode.return200(response);
+        createUser.createUserReturnCorrectBody(response);
+        accessToken = user.getAccessToken(response);
+        createUser.checkAccessToken(accessToken);
     }
 
     @Test
@@ -59,9 +59,9 @@ public class CreateUserTest {
             "POST https://stellarburgers.nomoreparties.site/api/auth/register")
     public void createUserThatAlreadyBeenCreatedTest() {
         createRequest = new CreateUserRequest(email, password, name);
-        createUser.createUserStepTest(createRequest);
-        Response response = createUser.createUserStepTest(createRequest);
-        statusCode.return403Test(response);
+        createUser.createUser(createRequest);
+        Response response = createUser.createUser(createRequest);
+        statusCode.return403(response);
         createUser.createUserThatAlreadyBeenCreatedReturnCorrectBody(response);
     }
 
@@ -71,8 +71,8 @@ public class CreateUserTest {
             "POST https://stellarburgers.nomoreparties.site/api/auth/register")
     public void createUserWithEmptyEmailTest() {
         createRequest = new CreateUserRequest("", password, name);
-        Response response = createUser.createUserStepTest(createRequest);
-        statusCode.return403Test(response);
+        Response response = createUser.createUser(createRequest);
+        statusCode.return403(response);
         createUser.createUserWithoutParamReturnCorrectBody(response);
     }
 
@@ -82,8 +82,8 @@ public class CreateUserTest {
             "POST https://stellarburgers.nomoreparties.site/api/auth/register")
     public void createUserWithEmptyPasswordTest() {
         createRequest = new CreateUserRequest(email, "", name);
-        Response response = createUser.createUserStepTest(createRequest);
-        statusCode.return403Test(response);
+        Response response = createUser.createUser(createRequest);
+        statusCode.return403(response);
         createUser.createUserWithoutParamReturnCorrectBody(response);
     }
 
@@ -93,8 +93,8 @@ public class CreateUserTest {
             "POST https://stellarburgers.nomoreparties.site/api/auth/register")
     public void createUserWithEmptyNameTest() {
         createRequest = new CreateUserRequest(email, password, "");
-        Response response = createUser.createUserStepTest(createRequest);
-        statusCode.return403Test(response);
+        Response response = createUser.createUser(createRequest);
+        statusCode.return403(response);
         createUser.createUserWithoutParamReturnCorrectBody(response);
     }
 
@@ -104,8 +104,8 @@ public class CreateUserTest {
             "POST https://stellarburgers.nomoreparties.site/api/auth/register")
     public void createUserWithNullEmailTest() {
         createRequest = new CreateUserRequest(null, password, name);
-        Response response = createUser.createUserStepTest(createRequest);
-        statusCode.return403Test(response);
+        Response response = createUser.createUser(createRequest);
+        statusCode.return403(response);
         createUser.createUserWithoutParamReturnCorrectBody(response);
     }
 
@@ -115,8 +115,8 @@ public class CreateUserTest {
             "POST https://stellarburgers.nomoreparties.site/api/auth/register")
     public void createUserWithNullPasswordTest() {
         createRequest = new CreateUserRequest(email, null, name);
-        Response response = createUser.createUserStepTest(createRequest);
-        statusCode.return403Test(response);
+        Response response = createUser.createUser(createRequest);
+        statusCode.return403(response);
         createUser.createUserWithoutParamReturnCorrectBody(response);
     }
 
@@ -126,8 +126,8 @@ public class CreateUserTest {
             "POST https://stellarburgers.nomoreparties.site/api/auth/register")
     public void createUserWithNullNameTest() {
         createRequest = new CreateUserRequest(email, password, null);
-        Response response = createUser.createUserStepTest(createRequest);
-        statusCode.return403Test(response);
+        Response response = createUser.createUser(createRequest);
+        statusCode.return403(response);
         createUser.createUserWithoutParamReturnCorrectBody(response);
     }
 

@@ -13,4 +13,5 @@ public class EnvConst {
 
     public static final String CREATE_USER_ALREADY_EXISTS_MSG_ERROR = "User already exists";
     public static final String CREATE_USER_WITHOUT_PARAM_MSG_ERROR = "Email, password and name are required fields";
+    public static final String LOGIN_USER_WITH_WRONG_PARAM_MSG_ERROR = "email or password are incorrect";
 }

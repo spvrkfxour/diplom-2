@@ -8,13 +8,19 @@ import io.restassured.response.Response;
 public class StatusCodeSteps {
 
     @Step("Return body correct status code - 200")
-    public void return200Test(Response response) {
+    public void return200(Response response) {
         response.then().statusCode(200);
         Allure.step("Response Status Code: " + response.getStatusCode());
     }
 
+    @Step("Return body correct status code - 401")
+    public void return401(Response response) {
+        response.then().statusCode(401);
+        Allure.step("Response Status Code: " + response.getStatusCode());
+    }
+
     @Step("Return body correct status code - 403")
-    public void return403Test(Response response) {
+    public void return403(Response response) {
         response.then().statusCode(403);
         Allure.step("Response Status Code: " + response.getStatusCode());
     }

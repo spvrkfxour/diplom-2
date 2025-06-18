@@ -15,20 +15,26 @@ public class CreateUserSteps {
     private final UserSteps userSteps = new UserSteps();
 
     @Step("Create user")
-    public Response createUserStepTest(CreateUserRequest request) {
+    public Response createUser(CreateUserRequest request) {
         return userSteps.createUser(request);
     }
 
+    @Step("Check access token")
+    public void checkAccessToken(String accessToken) {
+        assertThat(accessToken, allOf(
+                notNullValue(),
+                not(emptyString())
+        ));
+    }
+
     @Step("Return correct body")
-    public String createUserReturnCorrectBody(Response response) {
+    public void createUserReturnCorrectBody(Response response) {
         response.then()
                 .body("success", equalTo(true))
                 .body("user", notNullValue())
-                .body("refreshToken", notNullValue());
-        String accessToken = response.path("accessToken");
-        assertThat(accessToken, not(emptyString()));
+                .body("refreshToken", notNullValue())
+                .body("accessToken", notNullValue());
         Allure.step("Response Body: " + response.getBody().asString());
-        return accessToken;
     }
 
     @Step("Return correct body already exists")
