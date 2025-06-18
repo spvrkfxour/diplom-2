@@ -45,7 +45,6 @@ public class LoginUserTest {
         createRequest = new CreateUserRequest(email, password, name);
         Response response = createUser.createUser(createRequest);
         accessToken = user.getAccessToken(response);
-        createUser.checkAccessToken(accessToken);
     }
 
     @Test

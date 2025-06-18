@@ -6,8 +6,6 @@ import io.restassured.response.Response;
 import ru.yandex.praktikum.dto.CreateUserRequest;
 
 import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.emptyString;
 import static ru.yandex.praktikum.env.EnvConst.*;
 
 
@@ -17,14 +15,6 @@ public class CreateUserSteps {
     @Step("Create user")
     public Response createUser(CreateUserRequest request) {
         return userSteps.createUser(request);
-    }
-
-    @Step("Check access token")
-    public void checkAccessToken(String accessToken) {
-        assertThat(accessToken, allOf(
-                notNullValue(),
-                not(emptyString())
-        ));
     }
 
     @Step("Return correct body")

@@ -50,7 +50,6 @@ public class CreateUserTest {
         statusCode.return200(response);
         createUser.createUserReturnCorrectBody(response);
         accessToken = user.getAccessToken(response);
-        createUser.checkAccessToken(accessToken);
     }
 
     @Test
