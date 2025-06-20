@@ -4,6 +4,7 @@ import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import ru.yandex.praktikum.dto.CreateUserRequest;
 import ru.yandex.praktikum.dto.LoginUserRequest;
+import ru.yandex.praktikum.dto.UpdateUserRequest;
 
 import static io.restassured.RestAssured.given;
 import static ru.yandex.praktikum.env.EnvConst.*;
@@ -52,6 +53,17 @@ public class UserSteps {
                 .baseUri(URL)
                 .when()
                 .get(GET_USER_INFO_ENDPOINT);
+    }
+
+    public Response updateAuthUserEmail(UpdateUserRequest request, String accessToken) {
+
+        return given()
+                .header("Authorization", accessToken)
+                .contentType(ContentType.JSON)
+                .baseUri(URL)
+                .body(request)
+                .when()
+                .patch(GET_USER_INFO_ENDPOINT);
     }
 
     public Response deleteUser(String accessToken) {
