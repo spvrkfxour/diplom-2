@@ -9,6 +9,9 @@ public class EnvConst {
     public static final String LOGIN_USER_ENDPOINT = "api/auth/login";
     public static final String DELETE_USER_ENDPOINT = "api/auth/user";
     public static final String GET_USER_INFO_ENDPOINT = "api/auth/user";
+    public static final String UPDATE_USER_ENDPOINT = "api/auth/user";
+    public static final String GET_INGREDIENTS_ENDPOINT = "api/ingredients";
+    public static final String CREATE_ORDER_ENDPOINT = "api/orders";
 
     public static final String[] DOMAINS = { "@gmail.com", "@yandex.ru", "@mail.ru" };
 

@@ -63,7 +63,7 @@ public class UserSteps {
                 .baseUri(URL)
                 .body(request)
                 .when()
-                .patch(GET_USER_INFO_ENDPOINT);
+                .patch(UPDATE_USER_ENDPOINT);
     }
 
     public Response updateNotAuthUserInfoWithoutToken(UpdateUserRequest request) {
@@ -73,7 +73,7 @@ public class UserSteps {
                 .baseUri(URL)
                 .body(request)
                 .when()
-                .patch(GET_USER_INFO_ENDPOINT);
+                .patch(UPDATE_USER_ENDPOINT);
     }
 
     public Response deleteUser(String accessToken) {
