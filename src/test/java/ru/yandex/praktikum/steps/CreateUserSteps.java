@@ -6,6 +6,7 @@ import io.restassured.response.Response;
 import ru.yandex.praktikum.dto.CreateUserRequest;
 
 import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.Matchers.emptyString;
 import static ru.yandex.praktikum.env.EnvConst.*;
 
 
@@ -23,7 +24,8 @@ public class CreateUserSteps {
                 .body("success", equalTo(true))
                 .body("user", notNullValue())
                 .body("refreshToken", notNullValue())
-                .body("accessToken", notNullValue());
+                .body("accessToken", notNullValue())
+                .body("accessToken", not(emptyString()));
         Allure.step("Response Body: " + response.getBody().asString());
     }
 

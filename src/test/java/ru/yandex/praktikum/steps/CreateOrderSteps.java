@@ -4,8 +4,9 @@ import io.qameta.allure.Allure;
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.greaterThan;
 
 
 public class CreateOrderSteps {
@@ -20,8 +21,8 @@ public class CreateOrderSteps {
     public void getIngredientsReturnCorrectBody(Response response) {
         response.then()
                 .body("success", equalTo(true))
-                .body("data", notNullValue())
-                .body("data._id", notNullValue());
+                .body("data", hasSize(greaterThan(0)))
+                .body("data._id", everyItem(notNullValue()));
         Allure.step("Response Body: " + response.getBody().asString());
     }
 }

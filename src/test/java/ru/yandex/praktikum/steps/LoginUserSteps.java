@@ -6,6 +6,7 @@ import io.restassured.response.Response;
 import ru.yandex.praktikum.dto.LoginUserRequest;
 
 import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.Matchers.emptyString;
 import static ru.yandex.praktikum.env.EnvConst.LOGIN_USER_WITH_WRONG_PARAM_MSG_ERROR;
 
 
@@ -23,7 +24,8 @@ public class LoginUserSteps {
                 .body("success", equalTo(true))
                 .body("accessToken", notNullValue())
                 .body("refreshToken", notNullValue())
-                .body("user", notNullValue());
+                .body("user", notNullValue())
+                .body("accessToken", not(emptyString()));
         Allure.step("Response Body: " + response.getBody().asString());
     }
 
