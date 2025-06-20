@@ -16,10 +16,11 @@
         <rest-assured.version>5.5.5</rest-assured.version>
         <aspectj.version>1.9.24</aspectj.version>
         <allure.version>2.29.0</allure.version>
-        <maven-surefire-pugin.version>3.5.3</maven-surefire-pugin.version>
+        <maven-surefire-plugin.version>3.5.3</maven-surefire-plugin.version>
         <allure-maven.version>2.15.2</allure-maven.version>
         <jackson-databind.version>2.19.0</jackson-databind.version>
         <lombok.version>1.18.38</lombok.version>
+        <maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
     </properties>
 
     <dependencies>
@@ -62,8 +63,22 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>${maven-surefire-pugin.version}</version>
+                <version>${maven-surefire-plugin.version}</version>
                 <configuration>
                     <testFailureIgnore>false</testFailureIgnore>
                     <argLine>

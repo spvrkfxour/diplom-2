@@ -11,21 +11,19 @@ import org.junit.Before;
 import org.junit.Test;
 import ru.yandex.praktikum.dto.CreateUserRequest;
 import ru.yandex.praktikum.dto.LoginUserRequest;
-import ru.yandex.praktikum.steps.CreateUserSteps;
-import ru.yandex.praktikum.steps.LoginUserSteps;
-import ru.yandex.praktikum.steps.StatusCodeSteps;
-import ru.yandex.praktikum.steps.UserSteps;
+import ru.yandex.praktikum.steps.*;
 
 import java.util.concurrent.ThreadLocalRandom;
 
 import static ru.yandex.praktikum.env.EnvConst.DOMAINS;
 
 
-public class LoginUserTest {
+public class UpdateUserTest {
     private final UserSteps user = new UserSteps();
     private final CreateUserSteps createUser = new CreateUserSteps();
-    private final StatusCodeSteps statusCode = new StatusCodeSteps();
     private final LoginUserSteps loginUser = new LoginUserSteps();
+    private final GetUserInfoSteps getUserInfo = new GetUserInfoSteps();
+    private final StatusCodeSteps statusCode = new StatusCodeSteps();
     private CreateUserRequest createRequest;
     private LoginUserRequest loginRequest;
     private String accessToken;
@@ -48,37 +46,27 @@ public class LoginUserTest {
     }
 
     @Test
-    @DisplayName("Login user with random valid parameters")
-    @Description("Create user with random valid email, password and name parameters and Success Login this user. " +
-            "POST https://stellarburgers.nomoreparties.site/api/auth/login")
-    public void loginValidUserTest() {
+    @DisplayName("Get auth user email and name")
+    @Description("Create user with random valid email, password and name parameters. " +
+            "Login this user and Success Get user`s email and name " +
+            "GET https://stellarburgers.nomoreparties.site/api/auth/user")
+    public void getAuthUserInfoTest() {
         loginRequest = new LoginUserRequest(email, password);
-        Response response = loginUser.loginUser(loginRequest);
+        loginUser.loginUser(loginRequest);
+        Response response = getUserInfo.getUserInfo(accessToken);
         statusCode.return200(response);
-        loginUser.loginUserReturnCorrectBody(response);
+        getUserInfo.getAuthUserInfoReturnCorrectBody(response);
     }
 
     @Test
-    @DisplayName("Login user with wrong email")
-    @Description("Create user with random valid email, password and name parameters and Failed Login this user with wrong email. " +
-            "POST https://stellarburgers.nomoreparties.site/api/auth/login")
-    public void loginUserWithWrongEmailTest() {
-        loginRequest = new LoginUserRequest(generateRandomString(3, 12)
-                + DOMAINS[ThreadLocalRandom.current().nextInt(DOMAINS.length)], password);
-        Response response = loginUser.loginUser(loginRequest);
+    @DisplayName("Get user email and name without auth")
+    @Description("Create user with random valid email, password and name parameters " +
+            "and Failed Get user`s email and name without auth " +
+            "GET https://stellarburgers.nomoreparties.site/api/auth/user")
+    public void getNotAuthUserInfoTest() {
+        Response response = getUserInfo.getUserInfoWithoutToken();
         statusCode.return401(response);
-        loginUser.loginUserWithWrongParamReturnCorrectBody(response);
-    }
-
-    @Test
-    @DisplayName("Login user with wrong password")
-    @Description("Create user with random valid email, password and name parameters and Failed Login this user with wrong password. " +
-            "POST https://stellarburgers.nomoreparties.site/api/auth/login")
-    public void loginUserWithWrongPasswordTest() {
-        loginRequest = new LoginUserRequest(email, generateRandomString(3, 12).toLowerCase());
-        Response response = loginUser.loginUser(loginRequest);
-        statusCode.return401(response);
-        loginUser.loginUserWithWrongParamReturnCorrectBody(response);
+        getUserInfo.getNotAuthUserInfoReturnCorrectBody(response);
     }
 
     @After

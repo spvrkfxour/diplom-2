@@ -35,6 +35,25 @@ public class UserSteps {
                 .post(LOGIN_USER_ENDPOINT);
     }
 
+    public Response getUserInfo(String accessToken) {
+
+        return given()
+                .header("Authorization", accessToken)
+                .contentType(ContentType.JSON)
+                .baseUri(URL)
+                .when()
+                .get(GET_USER_INFO_ENDPOINT);
+    }
+
+    public Response getUserInfoWithoutToken() {
+
+        return given()
+                .contentType(ContentType.JSON)
+                .baseUri(URL)
+                .when()
+                .get(GET_USER_INFO_ENDPOINT);
+    }
+
     public Response deleteUser(String accessToken) {
 
         return given()
