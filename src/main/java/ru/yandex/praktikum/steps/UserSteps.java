@@ -55,10 +55,20 @@ public class UserSteps {
                 .get(GET_USER_INFO_ENDPOINT);
     }
 
-    public Response updateAuthUserEmail(UpdateUserRequest request, String accessToken) {
+    public Response updateAuthUserInfo(UpdateUserRequest request, String accessToken) {
 
         return given()
                 .header("Authorization", accessToken)
+                .contentType(ContentType.JSON)
+                .baseUri(URL)
+                .body(request)
+                .when()
+                .patch(GET_USER_INFO_ENDPOINT);
+    }
+
+    public Response updateNotAuthUserInfoWithoutToken(UpdateUserRequest request) {
+
+        return given()
                 .contentType(ContentType.JSON)
                 .baseUri(URL)
                 .body(request)

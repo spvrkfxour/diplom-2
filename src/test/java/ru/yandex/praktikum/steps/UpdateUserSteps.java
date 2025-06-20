@@ -24,9 +24,14 @@ public class UpdateUserSteps {
         return userSteps.getUserInfoWithoutToken();
     }
 
-    @Step("Update auth user email")
-    public Response updateAuthUserEmail(UpdateUserRequest request, String accessToken) {
-        return userSteps.updateAuthUserEmail(request, accessToken);
+    @Step("Update auth user info")
+    public Response updateAuthUserInfo(UpdateUserRequest request, String accessToken) {
+        return userSteps.updateAuthUserInfo(request, accessToken);
+    }
+
+    @Step("Update not auth user info")
+    public Response updateNotAuthUserInfoWithoutToken(UpdateUserRequest request) {
+        return userSteps.updateNotAuthUserInfoWithoutToken(request);
     }
 
     @Step("Return correct body")

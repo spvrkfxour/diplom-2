@@ -81,7 +81,7 @@ public class UpdateUserTest {
         loginUser.loginUser(loginRequest);
         String newEmail = generateRandomString(3, 12) + DOMAINS[ThreadLocalRandom.current().nextInt(DOMAINS.length)];
         userRequest = new UpdateUserRequest(newEmail, null);
-        Response response = updateUser.updateAuthUserEmail(userRequest, accessToken);
+        Response response = updateUser.updateAuthUserInfo(userRequest, accessToken);
         statusCode.return200(response);
         updateUser.updateUserReturnCorrectBody(response, newEmail, name);
     }
@@ -96,7 +96,7 @@ public class UpdateUserTest {
         loginUser.loginUser(loginRequest);
         String newName = generateRandomString(3, 12).toLowerCase();
         userRequest = new UpdateUserRequest(null, newName);
-        Response response = updateUser.updateAuthUserEmail(userRequest, accessToken);
+        Response response = updateUser.updateAuthUserInfo(userRequest, accessToken);
         statusCode.return200(response);
         updateUser.updateUserReturnCorrectBody(response, email, newName);
     }
@@ -116,11 +116,37 @@ public class UpdateUserTest {
         loginRequest = new LoginUserRequest(email, password);
         loginUser.loginUser(loginRequest);
         userRequest = new UpdateUserRequest(oldUserEmail, null);
-        Response response = updateUser.updateAuthUserEmail(userRequest, accessToken);
+        Response response = updateUser.updateAuthUserInfo(userRequest, accessToken);
         statusCode.return403(response);
         updateUser.getAuthUserUpdateEmailThatAlreadyBeenTakenReturnCorrectBody(response);
         Response oldUserTokenResponse = user.deleteUser(oldUserAccessToken);
         Allure.step("Delete old user: " + oldUserTokenResponse.getBody().asString());
+    }
+
+    @Test
+    @DisplayName("Update user email without auth")
+    @Description("Create user with random valid email, password and name parameters " +
+            "and Failed Update user`s email without auth. " +
+            "PATCH https://stellarburgers.nomoreparties.site/api/auth/user")
+    public void updateNotAuthUserEmailTest() {
+        String newEmail = generateRandomString(3, 12) + DOMAINS[ThreadLocalRandom.current().nextInt(DOMAINS.length)];
+        userRequest = new UpdateUserRequest(newEmail, null);
+        Response response = updateUser.updateNotAuthUserInfoWithoutToken(userRequest);
+        statusCode.return401(response);
+        updateUser.getNotAuthUserInfoReturnCorrectBody(response);
+    }
+
+    @Test
+    @DisplayName("Update user name without auth")
+    @Description("Create user with random valid email, password and name parameters " +
+            "and Failed Update user`s name without auth. " +
+            "PATCH https://stellarburgers.nomoreparties.site/api/auth/user")
+    public void updateNotAuthUserNameTest() {
+        String newName = generateRandomString(3, 12).toLowerCase();
+        userRequest = new UpdateUserRequest(null, newName);
+        Response response = updateUser.updateNotAuthUserInfoWithoutToken(userRequest);
+        statusCode.return401(response);
+        updateUser.getNotAuthUserInfoReturnCorrectBody(response);
     }
 
     @After
