@@ -8,6 +8,7 @@ import ru.yandex.praktikum.dto.UpdateUserRequest;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static ru.yandex.praktikum.env.EnvConst.GET_NOT_AUTH_USER_INFO_MSG_ERROR;
+import static ru.yandex.praktikum.env.EnvConst.UPDATE_USER_WITH_EMAIL_THAT_ALREADY_TAKEN_MSG_ERROR;
 
 
 public class UpdateUserSteps {
@@ -51,6 +52,14 @@ public class UpdateUserSteps {
                 .body("user", notNullValue())
                 .body("user.email", equalTo(email))
                 .body("user.name", equalTo(name));
+        Allure.step("Response Body: " + response.getBody().asString());
+    }
+
+    @Step("Return correct body update user with email that already been taken")
+    public void getAuthUserUpdateEmailThatAlreadyBeenTakenReturnCorrectBody(Response response) {
+        response.then()
+                .body("success", equalTo(false))
+                .body("message", equalTo(UPDATE_USER_WITH_EMAIL_THAT_ALREADY_TAKEN_MSG_ERROR));
         Allure.step("Response Body: " + response.getBody().asString());
     }
 }

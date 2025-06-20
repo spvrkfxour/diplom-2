@@ -101,6 +101,28 @@ public class UpdateUserTest {
         updateUser.updateUserReturnCorrectBody(response, email, newName);
     }
 
+    @Test
+    @DisplayName("Update auth user with email that already been taken")
+    @Description("Create two users with random valid email, password and name parameters. " +
+            "Login first user and Failed Update first user`s email with second user email. " +
+            "PATCH https://stellarburgers.nomoreparties.site/api/auth/user")
+    public void updateAuthUserEmailThatAlreadyBeenTakenTest() {
+        String oldUserEmail = generateRandomString(3, 12) + DOMAINS[ThreadLocalRandom.current().nextInt(DOMAINS.length)];
+        String oldUserPassword = generateRandomString(3, 12).toLowerCase();
+        String oldUserName = generateRandomString(3, 12).toLowerCase();
+        createRequest = new CreateUserRequest(oldUserEmail, oldUserPassword, oldUserName);
+        Response oldUserResponse = createUser.createUser(createRequest);
+        String oldUserAccessToken = user.getAccessToken(oldUserResponse);
+        loginRequest = new LoginUserRequest(email, password);
+        loginUser.loginUser(loginRequest);
+        userRequest = new UpdateUserRequest(oldUserEmail, null);
+        Response response = updateUser.updateAuthUserEmail(userRequest, accessToken);
+        statusCode.return403(response);
+        updateUser.getAuthUserUpdateEmailThatAlreadyBeenTakenReturnCorrectBody(response);
+        Response oldUserTokenResponse = user.deleteUser(oldUserAccessToken);
+        Allure.step("Delete old user: " + oldUserTokenResponse.getBody().asString());
+    }
+
     @After
     @Step("Delete user")
     public void tearDown() {
