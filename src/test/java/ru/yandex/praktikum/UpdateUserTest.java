@@ -43,6 +43,7 @@ public class UpdateUserTest {
         password = generateRandomString(3, 12).toLowerCase();
         name = generateRandomString(3, 12).toLowerCase();
         createRequest = new CreateUserRequest(email, password, name);
+
         Response response = createUser.createUser(createRequest);
         accessToken = user.getAccessToken(response);
     }
@@ -55,6 +56,7 @@ public class UpdateUserTest {
     public void getAuthUserInfoTest() {
         loginRequest = new LoginUserRequest(email, password);
         loginUser.loginUser(loginRequest);
+
         Response response = updateUser.getUserInfo(accessToken);
         statusCode.return200(response);
         updateUser.getAuthUserInfoReturnCorrectBody(response);
@@ -79,6 +81,7 @@ public class UpdateUserTest {
     public void updateAuthUserEmailTest() {
         loginRequest = new LoginUserRequest(email, password);
         loginUser.loginUser(loginRequest);
+
         String newEmail = generateRandomString(3, 12) + DOMAINS[ThreadLocalRandom.current().nextInt(DOMAINS.length)];
         userRequest = new UpdateUserRequest(newEmail, null);
         Response response = updateUser.updateAuthUserInfo(userRequest, accessToken);
@@ -94,6 +97,7 @@ public class UpdateUserTest {
     public void updateAuthUserNameTest() {
         loginRequest = new LoginUserRequest(email, password);
         loginUser.loginUser(loginRequest);
+
         String newName = generateRandomString(3, 12).toLowerCase();
         userRequest = new UpdateUserRequest(null, newName);
         Response response = updateUser.updateAuthUserInfo(userRequest, accessToken);
@@ -113,8 +117,10 @@ public class UpdateUserTest {
         createRequest = new CreateUserRequest(oldUserEmail, oldUserPassword, oldUserName);
         Response oldUserResponse = createUser.createUser(createRequest);
         String oldUserAccessToken = user.getAccessToken(oldUserResponse);
+
         loginRequest = new LoginUserRequest(email, password);
         loginUser.loginUser(loginRequest);
+
         userRequest = new UpdateUserRequest(oldUserEmail, null);
         Response response = updateUser.updateAuthUserInfo(userRequest, accessToken);
         statusCode.return403(response);
@@ -131,6 +137,7 @@ public class UpdateUserTest {
     public void updateNotAuthUserEmailTest() {
         String newEmail = generateRandomString(3, 12) + DOMAINS[ThreadLocalRandom.current().nextInt(DOMAINS.length)];
         userRequest = new UpdateUserRequest(newEmail, null);
+
         Response response = updateUser.updateNotAuthUserInfoWithoutToken(userRequest);
         statusCode.return401(response);
         updateUser.getNotAuthUserInfoReturnCorrectBody(response);
@@ -144,6 +151,7 @@ public class UpdateUserTest {
     public void updateNotAuthUserNameTest() {
         String newName = generateRandomString(3, 12).toLowerCase();
         userRequest = new UpdateUserRequest(null, newName);
+
         Response response = updateUser.updateNotAuthUserInfoWithoutToken(userRequest);
         statusCode.return401(response);
         updateUser.getNotAuthUserInfoReturnCorrectBody(response);

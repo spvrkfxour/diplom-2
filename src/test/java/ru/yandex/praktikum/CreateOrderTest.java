@@ -48,13 +48,14 @@ public class CreateOrderTest {
         password = generateRandomString(3, 12).toLowerCase();
         name = generateRandomString(3, 12).toLowerCase();
         createRequest = new CreateUserRequest(email, password, name);
+
         Response response = createUser.createUser(createRequest);
         accessToken = user.getAccessToken(response);
     }
 
     @Test
     @DisplayName("Get ingredients")
-    @Description("Get all ingredients. GET https://stellarburgers.nomoreparties.site/api/ingredients")
+    @Description("Success Get all ingredients. GET https://stellarburgers.nomoreparties.site/api/ingredients")
     public void getIngredientsTest() {
         Response response = createOrder.getIngredients();
         statusCode.return200(response);
@@ -63,15 +64,17 @@ public class CreateOrderTest {
 
     @Test
     @DisplayName("Create order auth user")
-    @Description("Auth user Create order with random ingredients from ingredients list. POST https://stellarburgers.nomoreparties.site/api/orders")
+    @Description("Auth user Success Create order with random ingredients from ingredients list. POST https://stellarburgers.nomoreparties.site/api/orders")
     public void createOrderWithAuthUserTest() {
         loginRequest = new LoginUserRequest(email, password);
         loginUser.loginUser(loginRequest);
+
         String firstIngredient = createOrder.getRandomIngredientId();
         String secondIngredient = createOrder.getRandomIngredientId();
         String thirdIngredient = createOrder.getRandomIngredientId();
         Collections.addAll(ingredients, firstIngredient, secondIngredient, thirdIngredient);
         createOrderRequest = new CreateOrderRequest(ingredients);
+
         Response response = createOrder.createOrderWithToken(createOrderRequest, accessToken);
         statusCode.return200(response);
         createOrder.createOrderReturnCorrectBody(response);
@@ -79,7 +82,7 @@ public class CreateOrderTest {
 
     @Test
     @DisplayName("Create order not auth user")
-    @Description("Not Auth user Create order with random ingredients from ingredients list. POST https://stellarburgers.nomoreparties.site/api/orders")
+    @Description("Not Auth user Failed Create order with random ingredients from ingredients list. POST https://stellarburgers.nomoreparties.site/api/orders")
     public void createOrderWithNotAuthUserTest() {
         String firstIngredient = createOrder.getRandomIngredientId();
         Collections.addAll(ingredients, firstIngredient);
@@ -91,10 +94,11 @@ public class CreateOrderTest {
 
     @Test
     @DisplayName("Create order with empty ingredients")
-    @Description("Auth user Create order with empty ingredients list. POST https://stellarburgers.nomoreparties.site/api/orders")
+    @Description("Auth user Failed Create order with empty ingredients list. POST https://stellarburgers.nomoreparties.site/api/orders")
     public void createOrderWithEmptyIngredientsTest() {
         loginRequest = new LoginUserRequest(email, password);
         loginUser.loginUser(loginRequest);
+
         createOrderRequest = new CreateOrderRequest(ingredients);
         Response response = createOrder.createOrderWithToken(createOrderRequest, accessToken);
         statusCode.return400(response);
@@ -103,10 +107,11 @@ public class CreateOrderTest {
 
     @Test
     @DisplayName("Create order with null ingredients")
-    @Description("Auth user Create order with null ingredients list. POST https://stellarburgers.nomoreparties.site/api/orders")
+    @Description("Auth user Failed Create order with null ingredients list. POST https://stellarburgers.nomoreparties.site/api/orders")
     public void createOrderWithNullIngredientsTest() {
         loginRequest = new LoginUserRequest(email, password);
         loginUser.loginUser(loginRequest);
+
         createOrderRequest = new CreateOrderRequest(null);
         Response response = createOrder.createOrderWithToken(createOrderRequest, accessToken);
         statusCode.return400(response);
@@ -115,10 +120,11 @@ public class CreateOrderTest {
 
     @Test
     @DisplayName("Create order with wrong hash id ingredient")
-    @Description("Auth user Create order with wrong hash id ingredient from ingredients list. POST https://stellarburgers.nomoreparties.site/api/orders")
+    @Description("Auth user Failed Create order with wrong hash id ingredient from ingredients list. POST https://stellarburgers.nomoreparties.site/api/orders")
     public void createOrderWithWrongHashIdIngredientTest() {
         loginRequest = new LoginUserRequest(email, password);
         loginUser.loginUser(loginRequest);
+
         String firstIngredient = createOrder.getRandomIngredientId();
         Collections.addAll(ingredients, firstIngredient + "error");
         createOrderRequest = new CreateOrderRequest(ingredients);

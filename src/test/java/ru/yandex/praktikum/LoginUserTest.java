@@ -42,6 +42,7 @@ public class LoginUserTest {
         email = generateRandomString(3, 12) + DOMAINS[ThreadLocalRandom.current().nextInt(DOMAINS.length)];
         password = generateRandomString(3, 12).toLowerCase();
         name = generateRandomString(3, 12).toLowerCase();
+
         createRequest = new CreateUserRequest(email, password, name);
         Response response = createUser.createUser(createRequest);
         accessToken = user.getAccessToken(response);

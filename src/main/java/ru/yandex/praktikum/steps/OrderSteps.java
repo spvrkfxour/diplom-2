@@ -57,4 +57,23 @@ public class OrderSteps {
 
         return ingredientsList.get(ThreadLocalRandom.current().nextInt(ingredientsList.size()));
     }
+
+    public Response getUserOrdersWithToken(String accessToken) {
+
+        return given()
+                .header("Authorization", accessToken)
+                .contentType(ContentType.JSON)
+                .baseUri(URL)
+                .when()
+                .get(GET_USER_ORDERS_ENDPOINT);
+    }
+
+    public Response getUserOrdersWithoutToken() {
+
+        return given()
+                .contentType(ContentType.JSON)
+                .baseUri(URL)
+                .when()
+                .get(GET_USER_ORDERS_ENDPOINT);
+    }
 }
