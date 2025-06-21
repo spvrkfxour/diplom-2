@@ -20,4 +20,5 @@ public class EnvConst {
     public static final String LOGIN_USER_WITH_WRONG_PARAM_MSG_ERROR = "email or password are incorrect";
     public static final String GET_NOT_AUTH_USER_INFO_MSG_ERROR = "You should be authorised";
     public static final String UPDATE_USER_WITH_EMAIL_THAT_ALREADY_TAKEN_MSG_ERROR = "User with such email already exists";
+    public static final String CREATE_EMPTY_ORDER_MSG_ERROR = "Ingredient ids must be provided";
 }
