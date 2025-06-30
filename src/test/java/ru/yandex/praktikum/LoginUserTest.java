@@ -1,5 +1,7 @@
 package ru.yandex.praktikum;
 
+import static ru.yandex.praktikum.env.EnvConst.DOMAINS;
+
 import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
 import io.qameta.allure.Step;
@@ -15,10 +17,7 @@ import ru.yandex.praktikum.steps.CreateUserSteps;
 import ru.yandex.praktikum.steps.LoginUserSteps;
 import ru.yandex.praktikum.steps.StatusCodeSteps;
 import ru.yandex.praktikum.steps.UserSteps;
-
 import java.util.concurrent.ThreadLocalRandom;
-
-import static ru.yandex.praktikum.env.EnvConst.DOMAINS;
 
 
 public class LoginUserTest {
@@ -26,24 +25,30 @@ public class LoginUserTest {
     private final CreateUserSteps createUser = new CreateUserSteps();
     private final StatusCodeSteps statusCode = new StatusCodeSteps();
     private final LoginUserSteps loginUser = new LoginUserSteps();
-    private CreateUserRequest createRequest;
     private LoginUserRequest loginRequest;
     private String accessToken;
     private String email;
     private String password;
     private String name;
 
+    @Before
+    public void setUp() {
+        generateTestData();
+        createTestUser();
+    }
+
+    private void generateTestData() {
+        email = generateRandomString(3, 12) + DOMAINS[ThreadLocalRandom.current().nextInt(DOMAINS.length)];
+        password = generateRandomString(3, 12);
+        name = generateRandomString(3, 12);
+    }
+
     private String generateRandomString(int minLen, int maxLen) {
         return RandomStringUtils.randomAlphanumeric(minLen, maxLen).toLowerCase();
     }
 
-    @Before
-    public void setUp() {
-        email = generateRandomString(3, 12) + DOMAINS[ThreadLocalRandom.current().nextInt(DOMAINS.length)];
-        password = generateRandomString(3, 12).toLowerCase();
-        name = generateRandomString(3, 12).toLowerCase();
-
-        createRequest = new CreateUserRequest(email, password, name);
+    private void createTestUser() {
+        CreateUserRequest createRequest = new CreateUserRequest(email, password, name);
         Response response = createUser.createUser(createRequest);
         accessToken = user.getAccessToken(response);
     }

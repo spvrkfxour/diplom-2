@@ -1,20 +1,18 @@
 package ru.yandex.praktikum.steps;
 
+import static io.restassured.RestAssured.given;
+import static ru.yandex.praktikum.env.EnvConst.*;
+
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import ru.yandex.praktikum.dto.CreateOrderRequest;
-
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
-
-import static io.restassured.RestAssured.given;
-import static ru.yandex.praktikum.env.EnvConst.*;
 
 
 public class OrderSteps {
 
     public Response getIngredients() {
-
         return given()
                 .contentType(ContentType.JSON)
                 .baseUri(URL)
@@ -23,7 +21,6 @@ public class OrderSteps {
     }
 
     public Response createOrderWithToken(CreateOrderRequest request, String accessToken) {
-
         return given()
                 .header("Authorization", accessToken)
                 .contentType(ContentType.JSON)
@@ -34,7 +31,6 @@ public class OrderSteps {
     }
 
     public Response createOrderWithoutToken(CreateOrderRequest request) {
-
         return given()
                 .contentType(ContentType.JSON)
                 .baseUri(URL)
@@ -44,7 +40,6 @@ public class OrderSteps {
     }
 
     public String getRandomIngredientId() {
-
         List<String> ingredientsList = given()
                 .contentType(ContentType.JSON)
                 .baseUri(URL)
@@ -59,7 +54,6 @@ public class OrderSteps {
     }
 
     public Response getUserOrdersWithToken(String accessToken) {
-
         return given()
                 .header("Authorization", accessToken)
                 .contentType(ContentType.JSON)
@@ -69,7 +63,6 @@ public class OrderSteps {
     }
 
     public Response getUserOrdersWithoutToken() {
-
         return given()
                 .contentType(ContentType.JSON)
                 .baseUri(URL)

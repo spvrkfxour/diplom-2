@@ -1,14 +1,14 @@
 package ru.yandex.praktikum.steps;
 
-import io.qameta.allure.Allure;
-import io.qameta.allure.Step;
-import io.restassured.response.Response;
-import ru.yandex.praktikum.dto.UpdateUserRequest;
-
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static ru.yandex.praktikum.env.EnvConst.GET_NOT_AUTH_USER_INFO_MSG_ERROR;
 import static ru.yandex.praktikum.env.EnvConst.UPDATE_USER_WITH_EMAIL_THAT_ALREADY_TAKEN_MSG_ERROR;
+
+import io.qameta.allure.Allure;
+import io.qameta.allure.Step;
+import io.restassured.response.Response;
+import ru.yandex.praktikum.dto.UpdateUserRequest;
 
 
 public class UpdateUserSteps {

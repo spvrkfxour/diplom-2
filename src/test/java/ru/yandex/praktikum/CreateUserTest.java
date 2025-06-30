@@ -1,5 +1,7 @@
 package ru.yandex.praktikum;
 
+import static ru.yandex.praktikum.env.EnvConst.*;
+
 import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
 import io.qameta.allure.Step;
@@ -13,10 +15,7 @@ import ru.yandex.praktikum.dto.CreateUserRequest;
 import ru.yandex.praktikum.steps.CreateUserSteps;
 import ru.yandex.praktikum.steps.StatusCodeSteps;
 import ru.yandex.praktikum.steps.UserSteps;
-
 import java.util.concurrent.ThreadLocalRandom;
-
-import static ru.yandex.praktikum.env.EnvConst.*;
 
 
 public class CreateUserTest {
@@ -24,21 +23,20 @@ public class CreateUserTest {
     private final CreateUserSteps createUser = new CreateUserSteps();
     private final StatusCodeSteps statusCode = new StatusCodeSteps();
     private CreateUserRequest createRequest;
-    private String accessToken;
+    private Response response;
     private String email;
     private String password;
     private String name;
-    private Response response;
-
-    private String generateRandomString(int minLen, int maxLen) {
-        return RandomStringUtils.randomAlphanumeric(minLen, maxLen).toLowerCase();
-    }
 
     @Before
     public void setUp() {
         email = generateRandomString(3, 12) + DOMAINS[ThreadLocalRandom.current().nextInt(DOMAINS.length)];
         password = generateRandomString(3, 12).toLowerCase();
         name = generateRandomString(3, 12).toLowerCase();
+    }
+
+    private String generateRandomString(int minLen, int maxLen) {
+        return RandomStringUtils.randomAlphanumeric(minLen, maxLen).toLowerCase();
     }
 
     @Test
@@ -133,7 +131,7 @@ public class CreateUserTest {
     @After
     @Step("Delete user")
     public void tearDown() {
-        accessToken = user.getAccessToken(response);
+        String accessToken = user.getAccessToken(response);
         if (accessToken != null) {
             Response response = user.deleteUser(accessToken);
             Allure.step("Response Body: " + response.getBody().asString());

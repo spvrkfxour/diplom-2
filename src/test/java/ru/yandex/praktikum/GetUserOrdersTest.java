@@ -1,5 +1,7 @@
 package ru.yandex.praktikum;
 
+import static ru.yandex.praktikum.env.EnvConst.DOMAINS;
+
 import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
 import io.qameta.allure.Step;
@@ -13,13 +15,10 @@ import ru.yandex.praktikum.dto.CreateOrderRequest;
 import ru.yandex.praktikum.dto.CreateUserRequest;
 import ru.yandex.praktikum.dto.LoginUserRequest;
 import ru.yandex.praktikum.steps.*;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
-
-import static ru.yandex.praktikum.env.EnvConst.DOMAINS;
 
 
 public class GetUserOrdersTest {
@@ -30,8 +29,6 @@ public class GetUserOrdersTest {
     private final CreateOrderSteps createOrder = new CreateOrderSteps();
     private final UpdateUserSteps updateUser = new UpdateUserSteps();
     private final GetUserOrdersSteps getUserOrders = new GetUserOrdersSteps();
-    private CreateUserRequest createRequest;
-    private LoginUserRequest loginRequest;
     private CreateOrderRequest createFirstOrderRequest;
     private CreateOrderRequest createSecondOrderRequest;
     private final List<String> firstOrderIngredients = new ArrayList<>();
@@ -41,36 +38,51 @@ public class GetUserOrdersTest {
     private String password;
     private String name;
 
-    private String generateRandomString(int minLen, int maxLen) {
-        return RandomStringUtils.randomAlphanumeric(minLen, maxLen).toLowerCase();
-    }
-
     @Before
     public void setUp() {
+        generateTestData();
+        createTestUser();
+        loginTestUser();
+        userCreateOrders();
+    }
+
+    private void generateTestData() {
         email = generateRandomString(3, 12) + DOMAINS[ThreadLocalRandom.current().nextInt(DOMAINS.length)];
-        password = generateRandomString(3, 12).toLowerCase();
-        name = generateRandomString(3, 12).toLowerCase();
-
-        createRequest = new CreateUserRequest(email, password, name);
-        Response response = createUser.createUser(createRequest);
-        accessToken = user.getAccessToken(response);
-
-        loginRequest = new LoginUserRequest(email, password);
-        loginUser.loginUser(loginRequest);
+        password = generateRandomString(3, 12);
+        name = generateRandomString(3, 12);
 
         String firstIngredientFirstOrder = createOrder.getRandomIngredientId();
         String secondIngredientFirstOrder = createOrder.getRandomIngredientId();
         String thirdIngredientFirstOrder = createOrder.getRandomIngredientId();
+
         Collections.addAll(firstOrderIngredients, firstIngredientFirstOrder ,
                 secondIngredientFirstOrder, thirdIngredientFirstOrder);
         createFirstOrderRequest = new CreateOrderRequest(firstOrderIngredients);
 
         String firstIngredientSecondOrder = createOrder.getRandomIngredientId();
         String secondIngredientSecondOrder = createOrder.getRandomIngredientId();
+
         Collections.addAll(secondOrderIngredients, firstIngredientSecondOrder ,
                 secondIngredientSecondOrder);
         createSecondOrderRequest = new CreateOrderRequest(secondOrderIngredients);
+    }
 
+    private String generateRandomString(int minLen, int maxLen) {
+        return RandomStringUtils.randomAlphanumeric(minLen, maxLen).toLowerCase();
+    }
+
+    private void createTestUser() {
+        CreateUserRequest createRequest = new CreateUserRequest(email, password, name);
+        Response response = createUser.createUser(createRequest);
+        accessToken = user.getAccessToken(response);
+    }
+
+    private void loginTestUser() {
+        LoginUserRequest loginRequest = new LoginUserRequest(email, password);
+        loginUser.loginUser(loginRequest);
+    }
+
+    private void userCreateOrders() {
         createOrder.createOrderWithToken(createFirstOrderRequest, accessToken);
         createOrder.createOrderWithToken(createSecondOrderRequest, accessToken);
     }

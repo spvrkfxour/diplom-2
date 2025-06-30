@@ -1,19 +1,18 @@
 package ru.yandex.praktikum.steps;
 
+import static io.restassured.RestAssured.given;
+import static ru.yandex.praktikum.env.EnvConst.*;
+
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import ru.yandex.praktikum.dto.CreateUserRequest;
 import ru.yandex.praktikum.dto.LoginUserRequest;
 import ru.yandex.praktikum.dto.UpdateUserRequest;
 
-import static io.restassured.RestAssured.given;
-import static ru.yandex.praktikum.env.EnvConst.*;
-
 
 public class UserSteps {
 
     public Response createUser(CreateUserRequest request) {
-
         return given()
                 .contentType(ContentType.JSON)
                 .baseUri(URL)
@@ -27,7 +26,6 @@ public class UserSteps {
     }
 
     public Response loginUser(LoginUserRequest request) {
-
         return given()
                 .contentType(ContentType.JSON)
                 .baseUri(URL)
@@ -37,7 +35,6 @@ public class UserSteps {
     }
 
     public Response getUserInfo(String accessToken) {
-
         return given()
                 .header("Authorization", accessToken)
                 .contentType(ContentType.JSON)
@@ -47,7 +44,6 @@ public class UserSteps {
     }
 
     public Response getUserInfoWithoutToken() {
-
         return given()
                 .contentType(ContentType.JSON)
                 .baseUri(URL)
@@ -56,7 +52,6 @@ public class UserSteps {
     }
 
     public Response updateAuthUserInfo(UpdateUserRequest request, String accessToken) {
-
         return given()
                 .header("Authorization", accessToken)
                 .contentType(ContentType.JSON)
@@ -67,7 +62,6 @@ public class UserSteps {
     }
 
     public Response updateNotAuthUserInfoWithoutToken(UpdateUserRequest request) {
-
         return given()
                 .contentType(ContentType.JSON)
                 .baseUri(URL)
@@ -77,7 +71,6 @@ public class UserSteps {
     }
 
     public Response deleteUser(String accessToken) {
-
         return given()
                 .header("Authorization", accessToken)
                 .contentType(ContentType.JSON)

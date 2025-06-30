@@ -1,13 +1,13 @@
 package ru.yandex.praktikum.steps;
 
+import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.Matchers.emptyString;
+import static ru.yandex.praktikum.env.EnvConst.LOGIN_USER_WITH_WRONG_PARAM_MSG_ERROR;
+
 import io.qameta.allure.Allure;
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
 import ru.yandex.praktikum.dto.LoginUserRequest;
-
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.Matchers.emptyString;
-import static ru.yandex.praktikum.env.EnvConst.LOGIN_USER_WITH_WRONG_PARAM_MSG_ERROR;
 
 
 public class LoginUserSteps {

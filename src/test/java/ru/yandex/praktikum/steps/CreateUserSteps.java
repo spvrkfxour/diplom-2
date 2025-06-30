@@ -1,13 +1,13 @@
 package ru.yandex.praktikum.steps;
 
+import static org.hamcrest.CoreMatchers.*;
+import static org.hamcrest.Matchers.emptyString;
+import static ru.yandex.praktikum.env.EnvConst.*;
+
 import io.qameta.allure.Allure;
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
 import ru.yandex.praktikum.dto.CreateUserRequest;
-
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.Matchers.emptyString;
-import static ru.yandex.praktikum.env.EnvConst.*;
 
 
 public class CreateUserSteps {

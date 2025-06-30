@@ -1,15 +1,15 @@
 package ru.yandex.praktikum.steps;
 
-import io.qameta.allure.Allure;
-import io.qameta.allure.Step;
-import io.restassured.response.Response;
-import ru.yandex.praktikum.dto.CreateOrderRequest;
-
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.Matchers.emptyString;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.greaterThan;
 import static ru.yandex.praktikum.env.EnvConst.CREATE_EMPTY_ORDER_MSG_ERROR;
+
+import io.qameta.allure.Allure;
+import io.qameta.allure.Step;
+import io.restassured.response.Response;
+import ru.yandex.praktikum.dto.CreateOrderRequest;
 
 
 public class CreateOrderSteps {

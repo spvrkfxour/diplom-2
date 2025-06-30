@@ -1,5 +1,7 @@
 package ru.yandex.praktikum;
 
+import static ru.yandex.praktikum.env.EnvConst.DOMAINS;
+
 import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
 import io.qameta.allure.Step;
@@ -13,10 +15,7 @@ import ru.yandex.praktikum.dto.CreateUserRequest;
 import ru.yandex.praktikum.dto.LoginUserRequest;
 import ru.yandex.praktikum.dto.UpdateUserRequest;
 import ru.yandex.praktikum.steps.*;
-
 import java.util.concurrent.ThreadLocalRandom;
-
-import static ru.yandex.praktikum.env.EnvConst.DOMAINS;
 
 
 public class UpdateUserTest {
@@ -33,17 +32,24 @@ public class UpdateUserTest {
     private String password;
     private String name;
 
+    @Before
+    public void setUp() {
+        generateTestData();
+        createTestUser();
+    }
+
+    private void generateTestData() {
+        email = generateRandomString(3, 12) + DOMAINS[ThreadLocalRandom.current().nextInt(DOMAINS.length)];
+        password = generateRandomString(3, 12);
+        name = generateRandomString(3, 12);
+    }
+
     private String generateRandomString(int minLen, int maxLen) {
         return RandomStringUtils.randomAlphanumeric(minLen, maxLen).toLowerCase();
     }
 
-    @Before
-    public void setUp() {
-        email = generateRandomString(3, 12) + DOMAINS[ThreadLocalRandom.current().nextInt(DOMAINS.length)];
-        password = generateRandomString(3, 12).toLowerCase();
-        name = generateRandomString(3, 12).toLowerCase();
+    private void createTestUser() {
         createRequest = new CreateUserRequest(email, password, name);
-
         Response response = createUser.createUser(createRequest);
         accessToken = user.getAccessToken(response);
     }

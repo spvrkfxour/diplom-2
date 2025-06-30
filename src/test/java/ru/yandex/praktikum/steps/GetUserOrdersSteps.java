@@ -1,13 +1,13 @@
 package ru.yandex.praktikum.steps;
 
-import io.qameta.allure.Allure;
-import io.qameta.allure.Step;
-import io.restassured.response.Response;
-
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.Matchers.emptyString;
 import static org.hamcrest.Matchers.greaterThan;
 import static org.hamcrest.Matchers.hasSize;
+
+import io.qameta.allure.Allure;
+import io.qameta.allure.Step;
+import io.restassured.response.Response;
 
 
 public class GetUserOrdersSteps {

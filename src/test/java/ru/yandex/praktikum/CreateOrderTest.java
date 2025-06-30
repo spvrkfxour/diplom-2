@@ -1,5 +1,7 @@
 package ru.yandex.praktikum;
 
+import static ru.yandex.praktikum.env.EnvConst.DOMAINS;
+
 import io.qameta.allure.Allure;
 import io.qameta.allure.Description;
 import io.qameta.allure.Step;
@@ -13,13 +15,10 @@ import ru.yandex.praktikum.dto.CreateOrderRequest;
 import ru.yandex.praktikum.dto.CreateUserRequest;
 import ru.yandex.praktikum.dto.LoginUserRequest;
 import ru.yandex.praktikum.steps.*;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
-
-import static ru.yandex.praktikum.env.EnvConst.DOMAINS;
 
 
 public class CreateOrderTest {
@@ -29,7 +28,6 @@ public class CreateOrderTest {
     private final LoginUserSteps loginUser = new LoginUserSteps();
     private final CreateOrderSteps createOrder = new CreateOrderSteps();
     private final UpdateUserSteps updateUser = new UpdateUserSteps();
-    private CreateUserRequest createRequest;
     private LoginUserRequest loginRequest;
     private CreateOrderRequest createOrderRequest;
     private final List<String> ingredients = new ArrayList<>();
@@ -38,17 +36,24 @@ public class CreateOrderTest {
     private String password;
     private String name;
 
+    @Before
+    public void setUp() {
+        generateTestData();
+        createTestUser();
+    }
+
+    private void generateTestData() {
+        email = generateRandomString(3, 12) + DOMAINS[ThreadLocalRandom.current().nextInt(DOMAINS.length)];
+        password = generateRandomString(3, 12);
+        name = generateRandomString(3, 12);
+    }
+
     private String generateRandomString(int minLen, int maxLen) {
         return RandomStringUtils.randomAlphanumeric(minLen, maxLen).toLowerCase();
     }
 
-    @Before
-    public void setUp() {
-        email = generateRandomString(3, 12) + DOMAINS[ThreadLocalRandom.current().nextInt(DOMAINS.length)];
-        password = generateRandomString(3, 12).toLowerCase();
-        name = generateRandomString(3, 12).toLowerCase();
-        createRequest = new CreateUserRequest(email, password, name);
-
+    private void createTestUser() {
+        CreateUserRequest createRequest = new CreateUserRequest(email, password, name);
         Response response = createUser.createUser(createRequest);
         accessToken = user.getAccessToken(response);
     }

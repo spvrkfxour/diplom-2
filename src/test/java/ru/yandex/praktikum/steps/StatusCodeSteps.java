@@ -1,10 +1,10 @@
 package ru.yandex.praktikum.steps;
 
+import static org.apache.http.HttpStatus.*;
+
 import io.qameta.allure.Allure;
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
-
-import static org.apache.http.HttpStatus.*;
 
 
 public class StatusCodeSteps {
