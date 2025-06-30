@@ -28,6 +28,7 @@ public class CreateUserTest {
     private String email;
     private String password;
     private String name;
+    private Response response;
 
     private String generateRandomString(int minLen, int maxLen) {
         return RandomStringUtils.randomAlphanumeric(minLen, maxLen).toLowerCase();
@@ -46,10 +47,9 @@ public class CreateUserTest {
             "POST https://stellarburgers.nomoreparties.site/api/auth/register")
     public void createValidUserTest() {
         createRequest = new CreateUserRequest(email, password, name);
-        Response response = createUser.createUser(createRequest);
+        response = createUser.createUser(createRequest);
         statusCode.return200(response);
         createUser.createUserReturnCorrectBody(response);
-        accessToken = user.getAccessToken(response);
     }
 
     @Test
@@ -59,7 +59,7 @@ public class CreateUserTest {
     public void createUserThatAlreadyBeenCreatedTest() {
         createRequest = new CreateUserRequest(email, password, name);
         createUser.createUser(createRequest);
-        Response response = createUser.createUser(createRequest);
+        response = createUser.createUser(createRequest);
         statusCode.return403(response);
         createUser.createUserThatAlreadyBeenCreatedReturnCorrectBody(response);
     }
@@ -70,7 +70,7 @@ public class CreateUserTest {
             "POST https://stellarburgers.nomoreparties.site/api/auth/register")
     public void createUserWithEmptyEmailTest() {
         createRequest = new CreateUserRequest("", password, name);
-        Response response = createUser.createUser(createRequest);
+        response = createUser.createUser(createRequest);
         statusCode.return403(response);
         createUser.createUserWithoutParamReturnCorrectBody(response);
     }
@@ -81,7 +81,7 @@ public class CreateUserTest {
             "POST https://stellarburgers.nomoreparties.site/api/auth/register")
     public void createUserWithEmptyPasswordTest() {
         createRequest = new CreateUserRequest(email, "", name);
-        Response response = createUser.createUser(createRequest);
+        response = createUser.createUser(createRequest);
         statusCode.return403(response);
         createUser.createUserWithoutParamReturnCorrectBody(response);
     }
@@ -92,7 +92,7 @@ public class CreateUserTest {
             "POST https://stellarburgers.nomoreparties.site/api/auth/register")
     public void createUserWithEmptyNameTest() {
         createRequest = new CreateUserRequest(email, password, "");
-        Response response = createUser.createUser(createRequest);
+        response = createUser.createUser(createRequest);
         statusCode.return403(response);
         createUser.createUserWithoutParamReturnCorrectBody(response);
     }
@@ -103,7 +103,7 @@ public class CreateUserTest {
             "POST https://stellarburgers.nomoreparties.site/api/auth/register")
     public void createUserWithNullEmailTest() {
         createRequest = new CreateUserRequest(null, password, name);
-        Response response = createUser.createUser(createRequest);
+        response = createUser.createUser(createRequest);
         statusCode.return403(response);
         createUser.createUserWithoutParamReturnCorrectBody(response);
     }
@@ -114,7 +114,7 @@ public class CreateUserTest {
             "POST https://stellarburgers.nomoreparties.site/api/auth/register")
     public void createUserWithNullPasswordTest() {
         createRequest = new CreateUserRequest(email, null, name);
-        Response response = createUser.createUser(createRequest);
+        response = createUser.createUser(createRequest);
         statusCode.return403(response);
         createUser.createUserWithoutParamReturnCorrectBody(response);
     }
@@ -125,7 +125,7 @@ public class CreateUserTest {
             "POST https://stellarburgers.nomoreparties.site/api/auth/register")
     public void createUserWithNullNameTest() {
         createRequest = new CreateUserRequest(email, password, null);
-        Response response = createUser.createUser(createRequest);
+        response = createUser.createUser(createRequest);
         statusCode.return403(response);
         createUser.createUserWithoutParamReturnCorrectBody(response);
     }
@@ -133,6 +133,7 @@ public class CreateUserTest {
     @After
     @Step("Delete user")
     public void tearDown() {
+        accessToken = user.getAccessToken(response);
         if (accessToken != null) {
             Response response = user.deleteUser(accessToken);
             Allure.step("Response Body: " + response.getBody().asString());
